@@ -3,14 +3,11 @@ include "./connect.php";
 class Crawler
 {
   public $response, $ch, $title, $content, $regex_title, $regex_content, $source, $url;
-  public $tit = 'title';
-  public $cont = 'content';
-  public $src = 'source';
   
   function setUrl($link){
     $this->url = $link;
   }
-
+//boc tach du lieu tu 1 web site
   public function crawl(){
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $this->url);
@@ -18,7 +15,7 @@ class Crawler
     $this->response = curl_exec($ch);
     curl_close($ch);
   }
-
+//lay ra title va content tu url nhap vao
   public function getInfo(){
     $this->crawl();
     preg_match($this->regex_title, $this->response, $titleX);
@@ -28,10 +25,10 @@ class Crawler
       $this->content = $contentX[1];
     }
   }
-  
+  //save title va content lay duoc vao database
   public function saveData(){
-  $baivietmoi = new BaiViet(0, $this->title, $this->content, $this->source);
-    $baivietmoi->InsertBaiViet();
+    $ins = new Query(0, $this->title, $this->content, $this->source);
+    $ins->insertToDB();
   }
 
 }

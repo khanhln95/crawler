@@ -2,7 +2,7 @@
 include "lib/crawler.php";
 include_once "lib/vnexpresscrawler.php";
 include_once "lib/vnnetcrawler.php";
-include_once "lib/BaiViet.php";
+include_once "doquery.php";
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,28 +13,31 @@ include_once "lib/BaiViet.php";
 </head>
 <body>
   <?php
-  $x = new Crawler;
-  if(isset($_POST['getlink'])){
-    $x->setUrl($_POST['getlink']);
-    $x->crawl();
-  }
-  
   $input_title = "";
   $input_content = "";
   $getSource = "";
   $handle = "";
-  if(isset($x->url)){
-    $mang1 = explode('://',$x->url);
-    if(isset($mang1[1])){
-      $mang2 = explode('/',$mang1[1]);
-      $getSource = $mang2[0];
+  
+  $crawler = new Crawler;
+  if(isset($_POST['getlink'])){
+    $crawler->setUrl($_POST['getlink']);
+    $crawler->crawl();
+  }
+  //phan tich url de kiem tra source dc lay tu vnexpress or vietnamnet
+  if(isset($crawler->url)){
+    $src1 = explode('://',$crawler->url);
+    if(isset($src1[1])){
+      $src2 = explode('/',$src1[1]);
+      $getSource = $src2[0];
     } 
   }
+
   if($getSource == "vnexpress.net"){
     $handle = new VnExpressCrawler();
   }else if($getSource == "vietnamnet.vn"){
     $handle = new VietnamnetCrawler();
   }
+
   if($handle != ""){
     $handle->setUrl($_POST['getlink']);
     $handle->getInfo();

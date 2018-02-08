@@ -33,10 +33,12 @@ include_once "doquery.php";
   }
 
   switch($getSource){
-    case 'vnexpress.net': $handle = new VnExpressCrawler();
-    break;
-    case 'vietnamnet.vn': $handle = new VietnamnetCrawler();
-    break;
+    case 'vnexpress.net': 
+      $handle = new VnExpressCrawler();
+      break;
+    case 'vietnamnet.vn': 
+      $handle = new VietnamnetCrawler();
+      break;
   }
 
   if($handle != ""){
